@@ -1,0 +1,18 @@
+{
+  "parser": "babel-eslint",
+  "parserOptions": {
+    "ecmaVersion": 2018
+  },
+  "extends": [
+    "eslint:recommended",
+    "eslint-config-prettier",
+    "plugin:react/recommended"
+  ],
+  "rules": {
+    "valid-typeof": "warn",
+    "no-console": "off"
+  },
+  "env": {
+    "browser": true
+  }
+}

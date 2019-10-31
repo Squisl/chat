@@ -1,0 +1,16 @@
+.input__container {
+  display: flex;
+  flex-direction: column;
+}
+
+.input__label {
+  font-weight: 700;
+  margin-bottom: 0.5em;
+}
+
+.input {
+  outline: none;
+  padding: 0.8em 1em;
+  border: none;
+  border-radius: 3px;
+}
