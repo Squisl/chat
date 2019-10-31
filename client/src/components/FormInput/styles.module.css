@@ -1,16 +1,15 @@
-.input__container {
+.form__input {
   display: flex;
   flex-direction: column;
 }
 
 .input__label {
-  font-weight: 700;
+  font-weight: 600;
+  font-size: 1.2rem;
   margin-bottom: 0.5em;
 }
 
 .input {
   outline: none;
   padding: 0.8em 1em;
-  border: none;
-  border-radius: 3px;
 }

@@ -3,9 +3,11 @@ const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const socketio = require("socket.io");
+const cookieParser = require("cookie-parser");
 
 const routes = require("./routes");
 
+require("dotenv").config();
 const app = express();
 const server = http.createServer(app);
 const io = socketio(server);
@@ -15,6 +17,7 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Routes
 app.use(routes);

@@ -1,54 +1,44 @@
 {
   "name": "client",
-  "version": "1.0.0",
-  "description": "chat client",
-  "main": "index.js",
-  "scripts": {
-    "start": "webpack-dev-server --open --mode development",
-    "build": "webpack --mode production",
-    "test": "jest",
-    "lint": "eslint src",
-    "prettier": "prettier \"**/*.+(js|json|yml|yaml|css|scss|ts|tsx|md|mdx|graphql)\"",
-    "format": "npm run prettier --write",
-    "validate": "npm run prettier --list-different",
-    "precommit": "lint-staged"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "version": "0.1.0",
+  "private": true,
+  "proxy": "http://localhost:4041",
   "dependencies": {
-    "jwt-decode": "^2.2.0",
     "react": "^16.11.0",
     "react-dom": "^16.11.0",
     "react-redux": "^7.1.1",
     "react-router-dom": "^5.1.2",
+    "react-scripts": "3.2.0",
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0"
   },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "format": "prettier --write \"src/**/*.{js,jsx}\"",
+    "lint": "eslint \"**/*.{js,jsx}\" --quiet"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devDependencies": {
-    "@babel/core": "^7.6.4",
-    "@babel/preset-env": "^7.6.3",
-    "@babel/preset-react": "^7.6.3",
-    "babel-eslint": "^10.0.3",
-    "babel-jest": "^24.9.0",
-    "babel-loader": "^8.0.6",
-    "css-loader": "^3.2.0",
     "eslint": "^6.6.0",
     "eslint-config-prettier": "^6.5.0",
     "eslint-plugin-react": "^7.16.0",
-    "file-loader": "^4.2.0",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "husky": "^3.0.9",
-    "jest": "^24.9.0",
-    "lint-staged": "^9.4.2",
-    "prettier": "^1.18.2",
-    "prop-types": "^15.7.2",
-    "react-test-renderer": "^16.11.0",
-    "style-loader": "^1.0.0",
-    "url-loader": "^2.2.0",
-    "webpack": "^4.41.2",
-    "webpack-cli": "^3.3.10",
-    "webpack-dev-server": "^3.9.0"
+    "prettier": "^1.18.2"
   }
 }

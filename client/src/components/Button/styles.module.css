@@ -1,9 +1,8 @@
 .button {
-  border: none;
+  font-size: 1.2rem;
+  font-weight: 600;
+  padding: 0.8rem 1rem;
   border-radius: 3px;
-  padding: 0.5em 0.8em;
-  background: black;
-  color: white;
-  cursor: pointer;
   outline: none;
+  cursor: pointer;
 }

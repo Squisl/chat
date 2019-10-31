@@ -1,21 +1,37 @@
-import React from "react"
-import PropTypes from "prop-types"
-import {Route} from "react-router-dom"
+import React from "react";
+import { NavLink } from "react-router-dom";
 
-import styles from "./styles.module.css"
-import LoginForm from "../../components/LoginForm"
+import styles from "./styles.module.css";
+import LoginForm from "../../components/LoginForm";
+import RegisterForm from "../../components/RegisterForm";
 
-const Home = () => {
+const Home = ({ match }) => {
+  console.log("Match", match);
   return (
     <div className={styles.home}>
-      <LoginForm />
-      <video className="VideoTag" autoPlay loop muted>
-        <source src="../../assets/videos/space.mp4" type="video/mp4" />
-      </video>
+      <div className={styles.home__header}>
+        <NavLink
+          exact
+          to="/"
+          className={styles.home__window__link}
+          activeClassName={styles.active}
+        >
+          Log In
+        </NavLink>
+        <NavLink
+          to="/register"
+          className={styles.home__window__link}
+          activeClassName={styles.active}
+        >
+          Register
+        </NavLink>
+      </div>
+      <div className={styles.home__window}>
+        {match.path === "/" && <LoginForm />}
+        {match.path === "/register" && <RegisterForm />}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-Home.propTypes = {}
-
-export default Home
+export default Home;

@@ -1,11 +1,13 @@
-import {connect} from "react-redux"
-import App from "./App"
+import { connect } from "react-redux";
 
-const mapStateToProps = state => ({})
+import App from "./App";
+import { loadUser } from "../../modules/user";
 
-const mapDispatchToProps = {}
+const mapStateToProps = state => ({});
+
+const mapDispatchToProps = { loadUser };
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps,
-)(App)
+  mapDispatchToProps
+)(App);

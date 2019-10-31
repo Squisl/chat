@@ -9,12 +9,9 @@ html {
 }
 
 .app {
-  font-family: "Merriweather", serif;
+  font-family: "Montserrat", sans-serif;
   height: 100vh;
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-}
-
-:root {
 }

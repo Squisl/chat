@@ -1,12 +1,12 @@
-.login__form {
+.register__form {
   display: flex;
   flex-direction: column;
 }
 
-.login__form > *:not(:last-child) {
+.register__form > *:not(:last-child) {
   margin-bottom: 1em;
 }
 
-.login__form__button {
+.register__form__button {
   align-self: flex-end;
 }

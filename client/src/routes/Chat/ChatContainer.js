@@ -1,13 +1,12 @@
 import { connect } from "react-redux";
 
-import LoginForm from "./LoginForm";
-import { login } from "../../modules/user";
+import Chat from "./Chat";
 
 const mapStateToProps = state => ({});
 
-const mapDispatchToProps = { login };
+const mapDispatchToProps = {};
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginForm);
+)(Chat);
