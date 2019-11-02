@@ -120,8 +120,36 @@ const reload = async (req, res) => {
   }
 };
 
+const refresh_token = async (req, res) => {
+  const token = req.cookies.jwt;
+  if (!token) {
+    return res.status(401).send({ token: "Token not found" });
+  }
+  try {
+    const decoded = await jwt.verify(token, process.env.REFRESH_SECRET);
+    if (!decoded) {
+      return res.status(401).send({ token: "Invalid token" });
+    }
+    const result = await user.read({ id: decoded.id });
+    if (result.length === 0) {
+      return res.status(401).send({ token: "Invalid token" });
+    }
+    const fetchedUser = result[0];
+    const { id, token_version } = fetchedUser;
+    const accessToken = createToken(
+      { id, token_version },
+      process.env.ACCESS_SECRET,
+      process.env.ACCESS_EXPIRATION
+    );
+    res.send({ token: accessToken });
+  } catch (e) {
+    console.error(e);
+  }
+};
+
 module.exports = {
   register,
   login,
-  reload
+  reload,
+  refresh_token
 };

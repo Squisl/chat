@@ -1,0 +1,12 @@
+.channel {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  padding: 1em;
+  color: white;
+}
+
+.channel:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

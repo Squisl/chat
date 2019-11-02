@@ -1,0 +1,26 @@
+.message {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr;
+  gap: 1em;
+  color: white;
+}
+
+.message__user {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.message__text {
+  grid-column: 1/2;
+  grid-row: 2/-1;
+  word-wrap: break-word;
+  font-size: 0.8rem;
+  line-height: 1.5;
+}
+
+.message__time {
+  grid-column: 2/-1;
+  grid-row: 1/2;
+  font-size: 0.8rem;
+}

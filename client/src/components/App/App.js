@@ -7,6 +7,7 @@ import Home from "../../routes/Home";
 import Chat from "../../routes/Chat";
 import Loading from "../Loading";
 import ProtectedRoute from "../../hoc/ProtectedRoute";
+import AuthenticatedRoute from "../../hoc/AuthenticatedRoute";
 
 const App = ({ loadUser }) => {
   const [loading, setLoading] = useState(true);
@@ -27,7 +28,7 @@ const App = ({ loadUser }) => {
   return (
     <div className={styles.app}>
       <BrowserRouter>
-        <Route exact path={["/", "/register"]} component={Home} />
+        <AuthenticatedRoute exact path={["/", "/register"]} component={Home} />
         <ProtectedRoute path="/chat" component={Chat} />
       </BrowserRouter>
     </div>

@@ -15,3 +15,8 @@ html {
   flex-direction: column;
   overflow-y: scroll;
 }
+
+:root {
+  --blue: rgb(38, 45, 64);
+  --dark-blue: rgb(30, 36, 56);
+}

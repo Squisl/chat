@@ -53,6 +53,9 @@ const RegisterForm = ({ register, history }) => {
   );
 };
 
-RegisterForm.propTypes = {};
+RegisterForm.propTypes = {
+  register: PropTypes.func.isRequired,
+  history: PropTypes.func.isRequired
+};
 
 export default withRouter(RegisterForm);

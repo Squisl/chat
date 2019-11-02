@@ -1,0 +1,28 @@
+.chat__form {
+  display: flex;
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.chat__form__input {
+  flex: 1;
+  font-size: 0.8rem;
+  border: none;
+  padding: 1em 1.3em;
+  outline: none;
+  background: var(--dark-blue);
+  color: white;
+}
+
+.chat__form__input::placeholder {
+  color: white;
+}
+
+.chat__form__button {
+  border: none;
+  display: flex;
+  background: var(--dark-blue);
+  color: white;
+  cursor: pointer;
+  outline: none;
+}

@@ -1,0 +1,14 @@
+.user {
+  display: flex;
+  align-items: center;
+}
+
+.user__image {
+  width: 2em;
+  border-radius: 3px;
+  margin-right: 0.5em;
+}
+
+.user__name {
+  color: white;
+}
