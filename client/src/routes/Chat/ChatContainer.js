@@ -1,7 +1,11 @@
 import { connect } from "react-redux";
 
 import Chat from "./Chat";
-import { fetchChannels, receiveChannel } from "../../modules/channel";
+import {
+  fetchChannels,
+  receiveChannel,
+  switchChannel
+} from "../../modules/channel";
 import { receiveMessages, receiveMessage } from "../../modules/message";
 
 const mapStateToProps = state => ({
@@ -13,7 +17,8 @@ const mapDispatchToProps = {
   fetchChannels,
   receiveChannel,
   receiveMessages,
-  receiveMessage
+  receiveMessage,
+  switchChannel
 };
 
 export default connect(

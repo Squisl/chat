@@ -2,7 +2,7 @@ const database = require("../database");
 
 const common = require("./common");
 
-const read = async () => {
+const read = async criteria => {
   try {
     const result = await database
       .table("messages")
@@ -13,7 +13,8 @@ const read = async () => {
         "messages.text",
         "messages.created_at"
       )
-      .leftJoin("users", "users.id", "messages.user_id");
+      .leftJoin("users", "users.id", "messages.user_id")
+      .where(criteria);
     return result;
   } catch (e) {
     console.error(e);

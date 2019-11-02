@@ -37,7 +37,7 @@
   background: var(--blue);
 }
 
-.chat__messages > *:not(:last-child) {
+.chat__messages > *:not(:nth-last-child(2)) {
   margin-bottom: 3em;
 }
 

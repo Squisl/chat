@@ -6,7 +6,6 @@ import LoginForm from "../../components/LoginForm";
 import RegisterForm from "../../components/RegisterForm";
 
 const Home = ({ match }) => {
-  console.log("Match", match);
   return (
     <div className={styles.home}>
       <div className={styles.home__header}>

@@ -16,6 +16,7 @@ const Chat = ({
   channel,
   receiveMessages,
   receiveMessage,
+  switchChannel,
   messages
 }) => {
   const [loading, setLoading] = useState(true);
@@ -24,6 +25,7 @@ const Chat = ({
   const [message, setMessage] = useState("");
 
   const ws = useRef(null);
+  const messagesEnd = useRef(null);
 
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:4041");
@@ -53,7 +55,6 @@ const Chat = ({
       socket.send(
         JSON.stringify({ action: "leave-channel", channel: "Lobby" })
       );
-      ws.close();
     };
 
     return () => {
@@ -76,7 +77,29 @@ const Chat = ({
     }
   }, [connected, channel.current]);
 
+  const scrolltoBottom = () => {
+    messagesEnd.current.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      scrolltoBottom();
+    }
+  }, [loading, messages]);
+
   const toggleChannel = () => setChannelModal(!channelModal);
+
+  const handleSwitchChannel = newChannel => () => {
+    const currentChannel = channel.current;
+    ws.current.send(
+      JSON.stringify({
+        action: "switch-channel",
+        channel: newChannel,
+        currentChannel
+      })
+    );
+    switchChannel(newChannel);
+  };
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -102,7 +125,7 @@ const Chat = ({
     <div className={styles.chat}>
       <div className={styles.chat__channels}>
         {channel.all.map(c => (
-          <Channel key={c.id} label={c.name} />
+          <Channel key={c.id} label={c.name} onClick={handleSwitchChannel(c)} />
         ))}
       </div>
       <div className={styles.chat__controls}>
@@ -126,6 +149,7 @@ const Chat = ({
             time={message.created_at}
           />
         ))}
+        <div ref={messagesEnd} style={{ margin: "0" }} />
       </div>
       <div className={styles.chat__form}>
         <ChatForm

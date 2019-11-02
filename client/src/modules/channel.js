@@ -3,6 +3,7 @@ import fetchAPI from "../utilities/fetchAPI";
 // Action Types
 const RECEIVE_CHANNELS = "RECEIVE_CHANNELS";
 const RECEIVE_CHANNEL = "RECEIVE_CHANNEL";
+const SWITCH_CHANNEL = "SWITCH_CHANNEL";
 
 // Action Creators
 export const receiveChannels = channels => ({
@@ -12,6 +13,11 @@ export const receiveChannels = channels => ({
 
 export const receiveChannel = channel => ({
   type: RECEIVE_CHANNEL,
+  channel
+});
+
+export const switchChannel = channel => ({
+  type: SWITCH_CHANNEL,
   channel
 });
 
@@ -43,6 +49,11 @@ export default (state = initialState, action) => {
       return {
         ...state,
         all: state.all.concat(action.channel)
+      };
+    case SWITCH_CHANNEL:
+      return {
+        ...state,
+        current: action.channel
       };
     default:
       return state;

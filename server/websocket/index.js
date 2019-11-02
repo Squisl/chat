@@ -62,6 +62,7 @@ const startSocket = server => {
         case "fetch-messages":
           const messages = await message.read({ channel_id: data.channel_id });
           ws.send(JSON.stringify({ action: "receive-messages", messages }));
+          console.log("Fetch Messages:", messages);
           break;
         case "send-message":
           const newMessage = await message.create({
@@ -72,13 +73,24 @@ const startSocket = server => {
           console.log("Chann:", channels);
           console.log("Lobby:", channels[data.channel_name]);
           channels[data.channel_name].forEach(user => {
-            if (user.user_id === jwt.id) {
-              return;
-            }
             user.ws.send(
               JSON.stringify({ action: "receive-message", message: newMessage })
             );
           });
+          break;
+        case "switch-channel":
+          console.log("Switch data:", data);
+          console.log("channels:", channels);
+          // Remove user from the old channel
+          channels[data.currentChannel.name] = channels[
+            data.currentChannel.name
+          ].filter(user => user.user_id !== jwt.id);
+          // Add user to the new channel
+          channels[data.channel.name] = channels[data.channel.name].concat({
+            user_id: jwt.id,
+            ws
+          });
+
           break;
       }
     });

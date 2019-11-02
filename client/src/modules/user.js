@@ -36,6 +36,8 @@ export const login = (data, history) => async dispatch => {
   }
 };
 
+export const logout = () => async dispatch => {};
+
 export const loadUser = setLoading => async dispatch => {
   try {
     const response = await fetchAPI("/api/user/reload", "GET");
