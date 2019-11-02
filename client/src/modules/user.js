@@ -3,11 +3,16 @@ import { receiveError } from "./error";
 
 // Action Types
 const RECEIVE_SESSION_USER = "RECEIVE_SESSION_USER";
+const LOGOUT_SESSION = "LOGOUT_SESSION";
 
 // Action Creators
 export const receiveSessionUser = user => ({
   type: RECEIVE_SESSION_USER,
   user
+});
+
+export const logoutSession = () => ({
+  type: LOGOUT_SESSION
 });
 
 export const register = (data, history) => async dispatch => {
@@ -36,7 +41,18 @@ export const login = (data, history) => async dispatch => {
   }
 };
 
-export const logout = () => async dispatch => {};
+export const logout = history => async dispatch => {
+  // Remove access token from the local storage
+  localStorage.removeItem("token");
+  // Delete the cookie containing the refresh token
+  try {
+    await fetchAPI("/api/user/logout", "GET");
+  } catch (e) {
+    console.error(e);
+  }
+  console.log("LOGOUT SESSION");
+  dispatch(logoutSession());
+};
 
 export const loadUser = setLoading => async dispatch => {
   try {
@@ -62,6 +78,11 @@ export default (state = initialState, action) => {
         ...state,
         session: action.user,
         authenticated: true
+      };
+    case LOGOUT_SESSION:
+      return {
+        ...state,
+        ...initialState
       };
     default:
       return state;

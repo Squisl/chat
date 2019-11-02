@@ -102,6 +102,12 @@ const login = async (req, res) => {
   }
 };
 
+const logout = (_, res) => {
+  res.clearCookie("jwt");
+  res.end();
+  console.log("LOGGING OUT");
+};
+
 const reload = async (req, res) => {
   const token = req.header("Authorization");
   if (!token) {
@@ -150,6 +156,7 @@ const refresh_token = async (req, res) => {
 module.exports = {
   register,
   login,
+  logout,
   reload,
   refresh_token
 };

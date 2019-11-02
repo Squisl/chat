@@ -7,6 +7,7 @@ import {
   switchChannel
 } from "../../modules/channel";
 import { receiveMessages, receiveMessage } from "../../modules/message";
+import { logout } from "../../modules/user";
 
 const mapStateToProps = state => ({
   channel: state.channel,
@@ -18,7 +19,8 @@ const mapDispatchToProps = {
   receiveChannel,
   receiveMessages,
   receiveMessage,
-  switchChannel
+  switchChannel,
+  logout
 };
 
 export default connect(

@@ -17,6 +17,7 @@ const Chat = ({
   receiveMessages,
   receiveMessage,
   switchChannel,
+  logout,
   messages
 }) => {
   const [loading, setLoading] = useState(true);
@@ -62,7 +63,7 @@ const Chat = ({
       socket.send(
         JSON.stringify({ action: "leave-channel", channel: "Lobby" })
       );
-      ws.close();
+      socket.close();
     };
   }, []);
 
@@ -139,7 +140,11 @@ const Chat = ({
           toggle={toggleChannel}
           ws={ws.current}
         />
-        <Button label="Log Out" className={styles.control__button} />
+        <Button
+          label="Log Out"
+          className={styles.control__button}
+          onClick={logout}
+        />
       </div>
       <div className={styles.chat__messages}>
         {messages.map(message => (
