@@ -9,6 +9,7 @@
 .message__user {
   grid-column: 1/2;
   grid-row: 1/2;
+  font-size: 1.1rem;
 }
 
 .message__text {

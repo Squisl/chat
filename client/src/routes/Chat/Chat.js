@@ -17,8 +17,12 @@ const Chat = ({
   receiveMessages,
   receiveMessage,
   switchChannel,
+  receiveUsers,
+  receiveUser,
+  removeUser,
   logout,
-  messages
+  messages,
+  user
 }) => {
   const [loading, setLoading] = useState(true);
   const [channelModal, setChannelModal] = useState(false);
@@ -27,12 +31,20 @@ const Chat = ({
 
   const ws = useRef(null);
   const messagesEnd = useRef(null);
+  const selectedChannel = useRef(null);
 
   useEffect(() => {
     const socket = new WebSocket("ws://localhost:4041");
     socket.onopen = () => {
       ws.current = socket;
-      socket.send(JSON.stringify({ action: "join-channel", channel: "Lobby" }));
+      fetchChannels(setLoading);
+      socket.send(
+        JSON.stringify({
+          action: "join-channel",
+          channel: "Lobby",
+          user: { id: user.session.id, name: user.session.name }
+        })
+      );
       setConnected(true);
     };
 
@@ -47,21 +59,38 @@ const Chat = ({
           break;
         case "receive-message":
           receiveMessage(data.message);
+          break;
+        case "receive-users":
+          receiveUsers(data.users);
+          break;
+        case "receive-user":
+          receiveUser(data.user);
+          break;
+        case "user-left":
+          removeUser(data.user_id);
+          break;
       }
     };
 
-    fetchChannels(setLoading);
     // Before every page refresh, leave the channel
     window.onbeforeunload = () => {
+      console.log("Before Refresh", channel.current.name);
       socket.send(
-        JSON.stringify({ action: "leave-channel", channel: "Lobby" })
+        JSON.stringify({
+          action: "leave-channel",
+          channel: selectedChannel.current.name
+        })
       );
+      ws.current.close();
     };
 
     return () => {
       // On chat unmount leave the channel
       socket.send(
-        JSON.stringify({ action: "leave-channel", channel: "Lobby" })
+        JSON.stringify({
+          action: "leave-channel",
+          channel: selectedChannel.current.name
+        })
       );
       socket.close();
     };
@@ -76,6 +105,7 @@ const Chat = ({
         })
       );
     }
+    selectedChannel.current = channel.current;
   }, [connected, channel.current]);
 
   const scrolltoBottom = () => {
@@ -92,11 +122,17 @@ const Chat = ({
 
   const handleSwitchChannel = newChannel => () => {
     const currentChannel = channel.current;
+    if (newChannel.name === currentChannel.name) {
+      return;
+    }
+    console.log("CurrentChannel:", currentChannel);
+    console.log("NewChannel:", newChannel);
     ws.current.send(
       JSON.stringify({
         action: "switch-channel",
         channel: newChannel,
-        currentChannel
+        currentChannel,
+        user: { id: user.session.id, name: user.session.name }
       })
     );
     switchChannel(newChannel);
@@ -164,7 +200,9 @@ const Chat = ({
         />
       </div>
       <div className={styles.chat__users}>
-        <User name="James" />
+        {user.channel.map(u => (
+          <User name={u.name} />
+        ))}
       </div>
     </div>
   );

@@ -38,31 +38,64 @@ const startSocket = server => {
       switch (data.action) {
         case "join-channel":
           channels[data.channel] = channels[data.channel].concat({
-            user_id: jwt.id,
+            user: data.user,
             ws
           });
+          // Send list of users in the channel
+          ws.send(
+            JSON.stringify({
+              action: "receive-users",
+              users: channels[data.channel].map(user => user.user)
+            })
+          );
+          // Send to each user in the channel the joined user
+          channels[data.channel].forEach(connection => {
+            if (connection.user.id === jwt.id) {
+              return;
+            }
+            console.log("Connection:", connection);
+            connection.ws.send(
+              JSON.stringify({ action: "receive-user", user: data.user })
+            );
+          });
+
           console.log("Join channel:", channels);
           break;
         case "leave-channel":
           console.log("Yes:", data);
           channels[data.channel] = channels[data.channel].filter(
-            user => user.user_id !== jwt.id
+            user => user.user.id !== jwt.id
           );
+          // TODO: Tell all users in the channel that the user left
+          channels[data.channel].forEach(connection => {
+            console.log("Remove user:", channels[data.channel]);
+            connection.ws.send(
+              JSON.stringify({ action: "user-left", user_id: jwt.id })
+            );
+          });
+          console.log("Leave Channel:", channels);
+
           break;
         case "create-channel":
           const newChannel = await createChannel({
             ...data.channel,
             user_id: jwt.id
           });
-
-          ws.send(
-            JSON.stringify({ action: "receive-channel", channel: newChannel })
-          );
+          // Send to all users of the chat the new channel
+          for (let key of Object.keys(channels)) {
+            channels[key].forEach(connection =>
+              connection.ws.send(
+                JSON.stringify({
+                  action: "receive-channel",
+                  channel: newChannel
+                })
+              )
+            );
+          }
           break;
         case "fetch-messages":
           const messages = await message.read({ channel_id: data.channel_id });
           ws.send(JSON.stringify({ action: "receive-messages", messages }));
-          console.log("Fetch Messages:", messages);
           break;
         case "send-message":
           const newMessage = await message.create({
@@ -80,17 +113,39 @@ const startSocket = server => {
           break;
         case "switch-channel":
           console.log("Switch data:", data);
-          console.log("channels:", channels);
           // Remove user from the old channel
           channels[data.currentChannel.name] = channels[
             data.currentChannel.name
-          ].filter(user => user.user_id !== jwt.id);
-          // Add user to the new channel
-          channels[data.channel.name] = channels[data.channel.name].concat({
-            user_id: jwt.id,
-            ws
+          ].filter(user => user.user.id !== jwt.id);
+          // TODO: Tell all user in the old channel that I left
+          channels[data.currentChannel.name].forEach(connection => {
+            connection.ws.send(
+              JSON.stringify({ action: "user-left", user_id: jwt.id })
+            );
           });
 
+          // Add user to the new channel
+          channels[data.channel.name] = channels[data.channel.name].concat({
+            user: data.user,
+            ws
+          });
+          // Tell all user in the new channel i joined
+          channels[data.channel.name].forEach(connection => {
+            if (connection.user.id === jwt.id) {
+              return;
+            }
+            connection.ws.send(
+              JSON.stringify({ action: "receive-user", user: data.user })
+            );
+          });
+          // Send list of users in the channel
+          ws.send(
+            JSON.stringify({
+              action: "receive-users",
+              users: channels[data.channel.name].map(user => user.user)
+            })
+          );
+          console.log("channels:", channels);
           break;
       }
     });

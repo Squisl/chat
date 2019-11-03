@@ -7,11 +7,17 @@ import {
   switchChannel
 } from "../../modules/channel";
 import { receiveMessages, receiveMessage } from "../../modules/message";
-import { logout } from "../../modules/user";
+import {
+  logout,
+  receiveUsers,
+  receiveUser,
+  removeUser
+} from "../../modules/user";
 
 const mapStateToProps = state => ({
   channel: state.channel,
-  messages: state.message
+  messages: state.message,
+  user: state.user
 });
 
 const mapDispatchToProps = {
@@ -20,6 +26,9 @@ const mapDispatchToProps = {
   receiveMessages,
   receiveMessage,
   switchChannel,
+  receiveUsers,
+  receiveUser,
+  removeUser,
   logout
 };
 

@@ -11,14 +11,20 @@ import refreshToken from "../middlewares/refreshToken";
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 // Root reducer
-const reducer = combineReducers({
+const appReducer = combineReducers({
   user,
   channel,
   message,
   error
 });
 
+// On logout reset the redux store state
+const rootReducer = (state, action) => {
+  if (action.type === "LOGOUT_SESSION") return appReducer(undefined, action);
+  return appReducer(state, action);
+};
+
 export default createStore(
-  reducer,
+  rootReducer,
   composeEnhancers(applyMiddleware(refreshToken, thunk))
 );

@@ -55,3 +55,7 @@
   background: var(--dark-blue);
   overflow-y: scroll;
 }
+
+.chat__users > *:not(:last-child) {
+  margin-bottom: 1em;
+}
