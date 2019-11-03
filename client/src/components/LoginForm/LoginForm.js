@@ -36,6 +36,9 @@ const LoginForm = ({ login, history }) => {
   );
 };
 
-LoginForm.propTypes = {};
+LoginForm.propTypes = {
+  login: PropTypes.func.isRequired,
+  history: PropTypes.object.isRequired
+};
 
 export default withRouter(LoginForm);

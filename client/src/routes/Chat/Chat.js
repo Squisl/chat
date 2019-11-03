@@ -69,6 +69,8 @@ const Chat = ({
         case "user-left":
           removeUser(data.user_id);
           break;
+        default:
+          return;
       }
     };
 
@@ -185,6 +187,7 @@ const Chat = ({
       <div className={styles.chat__messages}>
         {messages.map(message => (
           <Message
+            key={message.id}
             user={message.name}
             text={message.text}
             time={message.created_at}
@@ -201,7 +204,7 @@ const Chat = ({
       </div>
       <div className={styles.chat__users}>
         {user.channel.map(u => (
-          <User name={u.name} />
+          <User key={u.id} name={u.name} />
         ))}
       </div>
     </div>

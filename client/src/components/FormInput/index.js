@@ -17,6 +17,11 @@ const FormInput = ({ type, value, onChange, label }) => (
   </div>
 );
 
-FormInput.propTypes = {};
+FormInput.propTypes = {
+  type: PropTypes.string,
+  onChange: PropTypes.func.isRequired,
+  value: PropTypes.string.isRequired,
+  label: PropTypes.string.isRequired
+};
 
 export default FormInput;

@@ -19,7 +19,7 @@ const ChannelModal = ({ open, toggle, ws }) => {
   return (
     <Modal open={open} toggle={toggle}>
       <form className={styles.channel__form} onSubmit={handleSubmit}>
-        <FormInput label="Name" onChange={update(setName)} />
+        <FormInput label="Name" value={name} onChange={update(setName)} />
         <Button label="Add Channel" />
       </form>
     </Modal>
@@ -29,7 +29,7 @@ const ChannelModal = ({ open, toggle, ws }) => {
 ChannelModal.propTypes = {
   open: PropTypes.bool.isRequired,
   toggle: PropTypes.func.isRequired,
-  ws: PropTypes.func.isRequired
+  ws: PropTypes.object.isRequired
 };
 
 export default ChannelModal;

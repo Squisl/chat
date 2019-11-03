@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 
 import styles from "./App.module.css";
 import Home from "../../routes/Home";
@@ -35,6 +35,8 @@ const App = ({ loadUser }) => {
   );
 };
 
-App.propTypes = {};
+App.propTypes = {
+  loadUser: PropTypes.func.isRequired
+};
 
 export default App;

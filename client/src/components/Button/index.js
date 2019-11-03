@@ -16,7 +16,7 @@ const Button = ({ label, onClick, type, className }) => (
 Button.propTypes = {
   label: PropTypes.string.isRequired,
   onClick: PropTypes.func,
-  type: PropTypes.string.isRequired
+  type: PropTypes.string
 };
 
 export default Button;

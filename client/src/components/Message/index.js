@@ -12,6 +12,10 @@ const Message = ({ user, text, time }) => {
   );
 };
 
-Message.propTypes = {};
+Message.propTypes = {
+  user: PropTypes.string.isRequired,
+  text: PropTypes.string.isRequired,
+  time: PropTypes.string.isRequired
+};
 
 export default Message;
