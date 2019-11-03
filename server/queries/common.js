@@ -27,7 +27,7 @@ const update = table => async (criteria, data) => {
       .table(table)
       .update(data, "*")
       .where(criteria);
-    return updatedData;
+    return updatedData[0];
   } catch (e) {
     console.error(e);
   }

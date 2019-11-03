@@ -14,6 +14,7 @@ import ChannelSettingsModal from "../../components/ChannelSettingsModal/ChannelS
 const Chat = ({
   fetchChannels,
   receiveChannel,
+  updateChannel,
   channel,
   receiveMessages,
   receiveMessage,
@@ -71,6 +72,10 @@ const Chat = ({
           break;
         case "user-left":
           removeUser(data.user_id);
+          break;
+        case "receive-channel-update":
+          updateChannel(data.channel);
+          console.log("Channel Update", data.channel);
           break;
         default:
           return;

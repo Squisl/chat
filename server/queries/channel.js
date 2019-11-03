@@ -3,7 +3,10 @@ const common = require("./common");
 
 const readAll = async () => {
   try {
-    const response = await database.table("channels").select();
+    const response = await database
+      .table("channels")
+      .select()
+      .orderBy("name", "asc");
     return response;
   } catch (e) {
     console.error(e);

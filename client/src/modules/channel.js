@@ -4,6 +4,7 @@ import fetchAPI from "../utilities/fetchAPI";
 const RECEIVE_CHANNELS = "RECEIVE_CHANNELS";
 const RECEIVE_CHANNEL = "RECEIVE_CHANNEL";
 const SWITCH_CHANNEL = "SWITCH_CHANNEL";
+const UPDATE_CHANNEL = "UPDATE_CHANNEL";
 
 // Action Creators
 export const receiveChannels = channels => ({
@@ -18,6 +19,11 @@ export const receiveChannel = channel => ({
 
 export const switchChannel = channel => ({
   type: SWITCH_CHANNEL,
+  channel
+});
+
+export const updateChannel = channel => ({
+  type: UPDATE_CHANNEL,
   channel
 });
 
@@ -54,6 +60,16 @@ export default (state = initialState, action) => {
       return {
         ...state,
         current: action.channel
+      };
+    case UPDATE_CHANNEL:
+      return {
+        ...state,
+        all: state.all.map(channel => {
+          if (channel.id === action.channel.id) {
+            return action.channel;
+          }
+          return channel;
+        })
       };
     default:
       return state;

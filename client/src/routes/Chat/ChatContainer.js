@@ -4,7 +4,8 @@ import Chat from "./Chat";
 import {
   fetchChannels,
   receiveChannel,
-  switchChannel
+  switchChannel,
+  updateChannel
 } from "../../modules/channel";
 import { receiveMessages, receiveMessage } from "../../modules/message";
 import {
@@ -23,6 +24,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = {
   fetchChannels,
   receiveChannel,
+  updateChannel,
   receiveMessages,
   receiveMessage,
   switchChannel,

@@ -2,7 +2,7 @@ const WebSocket = require("ws");
 const jwt = require("jsonwebtoken");
 
 const { createChannel, establishChannels } = require("../services/channel");
-const { message } = require("../queries");
+const { message, channel } = require("../queries");
 
 const startSocket = server => {
   const wss = new WebSocket.Server({
@@ -134,6 +134,27 @@ const startSocket = server => {
           );
           break;
         case "update-channel":
+          // TODO: Check if channel name is already taken
+          const result = await channel.read({ name: data.channel.name });
+          if (result.length > 0) {
+            ws.send(
+              JSON.stringify({
+                action: "receive-channel-update",
+                error: "Channel name already taken"
+              })
+            );
+          } else {
+            const updatedChannel = await channel.update(
+              { id: data.channel.id },
+              data.channel
+            );
+            ws.send(
+              JSON.stringify({
+                action: "receive-channel-update",
+                channel: updatedChannel
+              })
+            );
+          }
       }
     });
   });
