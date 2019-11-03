@@ -8,7 +8,8 @@ import ChatForm from "../../components/ChatForm";
 import User from "../../components/User";
 import Loading from "../../components/Loading";
 import Button from "../../components/Button";
-import ChannelModal from "../../components/ChannelModal";
+import AddChannelModal from "../../components/AddChannelModal";
+import ChannelSettingsModal from "../../components/ChannelSettingsModal/ChannelSettingsModal";
 
 const Chat = ({
   fetchChannels,
@@ -25,10 +26,11 @@ const Chat = ({
   user
 }) => {
   const [loading, setLoading] = useState(true);
-  const [channelModal, setChannelModal] = useState(false);
+  const [openAddChannel, setOpenAddChannel] = useState(false);
+  const [openChannelSettings, setOpenChannelSettings] = useState(false);
   const [connected, setConnected] = useState(false);
   const [message, setMessage] = useState("");
-
+  const [clickedChannel, setClickedChannel] = useState(null);
   const ws = useRef(null);
   const messagesEnd = useRef(null);
   const selectedChannel = useRef(null);
@@ -120,7 +122,15 @@ const Chat = ({
     }
   }, [loading, messages]);
 
-  const toggleChannel = () => setChannelModal(!channelModal);
+  const toggleAddChannel = () => setOpenAddChannel(!openAddChannel);
+
+  const toggleChannelSettings = channel => e => {
+    e.stopPropagation();
+    if (channel) {
+      setClickedChannel(channel);
+    }
+    setOpenChannelSettings(!openChannelSettings);
+  };
 
   const handleSwitchChannel = newChannel => () => {
     const currentChannel = channel.current;
@@ -142,7 +152,7 @@ const Chat = ({
 
   const handleSubmit = e => {
     e.preventDefault();
-
+    if (message.trim().length === 0) return;
     ws.current.send(
       JSON.stringify({
         action: "send-message",
@@ -162,20 +172,31 @@ const Chat = ({
 
   return (
     <div className={styles.chat}>
+      <ChannelSettingsModal
+        toggle={toggleChannelSettings()}
+        open={openChannelSettings}
+        channel={clickedChannel}
+      />
       <div className={styles.chat__channels}>
         {channel.all.map(c => (
-          <Channel key={c.id} label={c.name} onClick={handleSwitchChannel(c)} />
+          <Channel
+            key={c.id}
+            session={user.session}
+            channel={c}
+            onClick={handleSwitchChannel(c)}
+            toggleModal={toggleChannelSettings}
+          />
         ))}
       </div>
       <div className={styles.chat__controls}>
         <Button
           label="Add Channel"
           className={styles.control__button}
-          onClick={toggleChannel}
+          onClick={toggleAddChannel}
         />
-        <ChannelModal
-          open={channelModal}
-          toggle={toggleChannel}
+        <AddChannelModal
+          open={openAddChannel}
+          toggle={toggleAddChannel}
           ws={ws.current}
         />
         <Button

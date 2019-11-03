@@ -1,5 +1,6 @@
 .channel {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto;
   justify-content: center;
   align-items: center;
   cursor: pointer;
@@ -9,4 +10,8 @@
 
 .channel:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+.channel__name {
+  text-align: center;
 }

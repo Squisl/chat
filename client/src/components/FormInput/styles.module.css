@@ -12,4 +12,16 @@
 .input {
   outline: none;
   padding: 0.8em 1em;
+  border: 2px solid var(--dark-blue);
+  border-radius: 3px;
+}
+
+.error {
+  border: 2px solid var(--dark-red);
+}
+
+.input__error {
+  color: var(--dark-red);
+  font-size: 0.8rem;
+  margin: 0.5em 0;
 }

@@ -1,0 +1,12 @@
+.channel__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel__form > *:not(:last-child) {
+  margin-bottom: 1em;
+}
+
+.form__button {
+  align-self: flex-end;
+}
