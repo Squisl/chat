@@ -31,6 +31,7 @@ const Chat = ({
   const [connected, setConnected] = useState(false);
   const [message, setMessage] = useState("");
   const [clickedChannel, setClickedChannel] = useState(null);
+
   const ws = useRef(null);
   const messagesEnd = useRef(null);
   const selectedChannel = useRef(null);
@@ -78,7 +79,6 @@ const Chat = ({
 
     // Before every page refresh, leave the channel
     window.onbeforeunload = () => {
-      console.log("Before Refresh", channel.current.name);
       socket.send(
         JSON.stringify({
           action: "leave-channel",
@@ -137,8 +137,6 @@ const Chat = ({
     if (newChannel.name === currentChannel.name) {
       return;
     }
-    console.log("CurrentChannel:", currentChannel);
-    console.log("NewChannel:", newChannel);
     ws.current.send(
       JSON.stringify({
         action: "switch-channel",
@@ -176,6 +174,7 @@ const Chat = ({
         toggle={toggleChannelSettings()}
         open={openChannelSettings}
         channel={clickedChannel}
+        ws={ws.current}
       />
       <div className={styles.chat__channels}>
         {channel.all.map(c => (

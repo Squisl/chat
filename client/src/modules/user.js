@@ -68,7 +68,6 @@ export const logout = () => async dispatch => {
   } catch (e) {
     console.error(e);
   }
-  console.log("LOGOUT SESSION");
   dispatch(logoutSession());
 };
 

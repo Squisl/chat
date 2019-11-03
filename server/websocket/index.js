@@ -28,13 +28,11 @@ const startSocket = server => {
   })();
 
   wss.on("connection", (ws, req) => {
-    console.log("Channels:", channels);
     // Each key is a channel and the corresponding value is an array of websocket connections
 
     const { jwt } = req;
     ws.on("message", async data => {
       data = JSON.parse(data);
-      console.log("data:", data);
       switch (data.action) {
         case "join-channel":
           channels[data.channel] = channels[data.channel].concat({
@@ -53,28 +51,21 @@ const startSocket = server => {
             if (connection.user.id === jwt.id) {
               return;
             }
-            console.log("Connection:", connection);
             connection.ws.send(
               JSON.stringify({ action: "receive-user", user: data.user })
             );
           });
-
-          console.log("Join channel:", channels);
           break;
         case "leave-channel":
-          console.log("Yes:", data);
           channels[data.channel] = channels[data.channel].filter(
             user => user.user.id !== jwt.id
           );
           // TODO: Tell all users in the channel that the user left
           channels[data.channel].forEach(connection => {
-            console.log("Remove user:", channels[data.channel]);
             connection.ws.send(
               JSON.stringify({ action: "user-left", user_id: jwt.id })
             );
           });
-          console.log("Leave Channel:", channels);
-
           break;
         case "create-channel":
           const newChannel = await createChannel({
@@ -102,9 +93,6 @@ const startSocket = server => {
             ...data.message,
             user_id: jwt.id
           });
-          console.log("New Message:", newMessage);
-          console.log("Chann:", channels);
-          console.log("Lobby:", channels[data.channel_name]);
           channels[data.channel_name].forEach(user => {
             user.ws.send(
               JSON.stringify({ action: "receive-message", message: newMessage })
@@ -112,7 +100,6 @@ const startSocket = server => {
           });
           break;
         case "switch-channel":
-          console.log("Switch data:", data);
           // Remove user from the old channel
           channels[data.currentChannel.name] = channels[
             data.currentChannel.name
@@ -145,8 +132,8 @@ const startSocket = server => {
               users: channels[data.channel.name].map(user => user.user)
             })
           );
-          console.log("channels:", channels);
           break;
+        case "update-channel":
       }
     });
   });

@@ -15,7 +15,6 @@ const read = table => async criteria => {
       .table(table)
       .select()
       .where(criteria);
-    console.log("Read data:", data);
     return data;
   } catch (e) {
     console.error(e);

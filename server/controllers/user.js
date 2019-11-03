@@ -105,7 +105,6 @@ const login = async (req, res) => {
 const logout = (_, res) => {
   res.clearCookie("jwt");
   res.send({ msg: "successfully logout" });
-  console.log("LOGGING OUT");
 };
 
 const reload = async (req, res) => {

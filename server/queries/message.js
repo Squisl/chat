@@ -25,7 +25,6 @@ const create = async data => {
   try {
     const newData = await database.table("messages").insert(data, "*");
     const message = newData[0];
-    console.log("new Data:", newData);
     const result = await database
       .table("users")
       .select("name")

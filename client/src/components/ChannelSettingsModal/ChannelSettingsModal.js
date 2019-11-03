@@ -7,7 +7,7 @@ import FormInput from "../FormInput";
 import Button from "../Button";
 import { channelValidation } from "../../utilities/validation";
 
-const ChannelSettingsModal = ({ channel, toggle, open }) => {
+const ChannelSettingsModal = ({ channel, toggle, open, ws }) => {
   const [name, setName] = useState("");
   const [errors, setErrors] = useState({});
 
@@ -23,7 +23,13 @@ const ChannelSettingsModal = ({ channel, toggle, open }) => {
     e.preventDefault();
     const validation = channelValidation({ name });
     if (validation.valid) {
-      // TODO: Send to server and validate name is not taken.
+      // TODO: Send to server and validate name if not taken.
+      ws.send(
+        JSON.stringify({
+          action: "update-channel",
+          channel: { ...channel, name }
+        })
+      );
       if (Object.keys(errors).length > 0) {
         setErrors({});
       }
@@ -55,7 +61,8 @@ const ChannelSettingsModal = ({ channel, toggle, open }) => {
 ChannelSettingsModal.propTypes = {
   channel: PropTypes.object,
   toggle: PropTypes.func.isRequired,
-  open: PropTypes.bool.isRequired
+  open: PropTypes.bool.isRequired,
+  ws: PropTypes.object.isRequired
 };
 
 export default ChannelSettingsModal;
