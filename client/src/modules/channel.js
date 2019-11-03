@@ -64,12 +64,14 @@ export default (state = initialState, action) => {
     case UPDATE_CHANNEL:
       return {
         ...state,
-        all: state.all.map(channel => {
-          if (channel.id === action.channel.id) {
-            return action.channel;
-          }
-          return channel;
-        })
+        all: state.all
+          .map(channel => {
+            if (channel.id === action.channel.id) {
+              return action.channel;
+            }
+            return channel;
+          })
+          .sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
       };
     default:
       return state;
