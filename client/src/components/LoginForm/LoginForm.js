@@ -5,27 +5,43 @@ import { withRouter } from "react-router-dom";
 import styles from "./LoginForm.module.css";
 import FormInput from "../FormInput";
 import Button from "../Button";
+import { loginValidation } from "../../utilities/validation";
 
 const LoginForm = ({ login, history }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState({});
 
   const update = fn => e => fn(e.target.value);
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    login({ name, password }, history);
+    const data = {
+      name,
+      password
+    };
+    const { errors, valid } = loginValidation(data);
+    if (valid) {
+      login(data, history);
+    } else {
+      setErrors(errors);
+    }
   };
 
   return (
     <form className={styles.login__form} onSubmit={handleSubmit}>
-      <FormInput label="Name" value={name} onChange={update(setName)} />
+      <FormInput
+        label="Name"
+        value={name}
+        onChange={update(setName)}
+        error={errors.name}
+      />
       <FormInput
         label="Password"
         type="password"
         value={password}
         onChange={update(setPassword)}
+        error={errors.password}
       />
       <Button
         label="Log In"

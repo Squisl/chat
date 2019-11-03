@@ -6,12 +6,17 @@ import { FaCog } from "react-icons/fa";
 const Channel = ({ session, channel, onClick, toggleModal }) => (
   <div onClick={onClick} className={styles.channel}>
     <span className={styles.channel__name}>{channel.name}</span>
-    {session.id === channel.user_id && <FaCog onClick={toggleModal(channel)} />}
+    {session.id === channel.user_id ? (
+      <FaCog onClick={toggleModal(channel)} />
+    ) : (
+      <div style={{ width: "16px" }}></div>
+    )}
   </div>
 );
 
 Channel.propTypes = {
-  label: PropTypes.string.isRequired,
+  session: PropTypes.object.isRequired,
+  channel: PropTypes.object.isRequired,
   onClick: PropTypes.func.isRequired,
   toggleModal: PropTypes.func.isRequired
 };

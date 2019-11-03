@@ -5,10 +5,11 @@ import styles from "./ChannelSettingsModal.module.css";
 import Modal from "../Modal";
 import FormInput from "../FormInput";
 import Button from "../Button";
+import { channelValidation } from "../../utilities/validation";
 
 const ChannelSettingsModal = ({ channel, toggle, open }) => {
-  const [error, setError] = useState("");
   const [name, setName] = useState("");
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (channel) {
@@ -20,13 +21,14 @@ const ChannelSettingsModal = ({ channel, toggle, open }) => {
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (name.trim().length === 0) {
-      setError("Name must be at least 2 characters");
-      return;
-    }
-    if (name.trim().length > 20) {
-      setError("Name must be less than 20 characters");
-      return;
+    const validation = channelValidation({ name });
+    if (validation.valid) {
+      // TODO: Send to server and validate name is not taken.
+      if (Object.keys(errors).length > 0) {
+        setErrors({});
+      }
+    } else {
+      setErrors(validation.errors);
     }
   };
 
@@ -38,7 +40,7 @@ const ChannelSettingsModal = ({ channel, toggle, open }) => {
           label="Name"
           value={name}
           onChange={update(setName)}
-          error={error}
+          error={errors.name}
         />
         <Button
           label="Save"
@@ -50,6 +52,10 @@ const ChannelSettingsModal = ({ channel, toggle, open }) => {
   );
 };
 
-ChannelSettingsModal.propTypes = {};
+ChannelSettingsModal.propTypes = {
+  channel: PropTypes.object,
+  toggle: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired
+};
 
 export default ChannelSettingsModal;

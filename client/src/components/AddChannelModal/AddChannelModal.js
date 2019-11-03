@@ -5,14 +5,25 @@ import styles from "./AddChannelModal.module.css";
 import Modal from "../Modal";
 import FormInput from "../FormInput";
 import Button from "../Button";
+import { channelValidation } from "../../utilities/validation";
 
 const AddChannelModal = ({ open, toggle, ws }) => {
   const [name, setName] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = e => {
     e.preventDefault();
-    if (name.trim().length === 0) return;
-    ws.send(JSON.stringify({ action: "create-channel", channel: { name } }));
+    const validation = channelValidation({ name });
+    if (validation.valid) {
+      ws.send(JSON.stringify({ action: "create-channel", channel: { name } }));
+      if (Object.keys(errors).length) {
+        setErrors({});
+      }
+      setName("");
+      toggle();
+    } else {
+      setErrors(validation.errors);
+    }
   };
 
   const update = fn => e => fn(e.target.value);
@@ -20,7 +31,12 @@ const AddChannelModal = ({ open, toggle, ws }) => {
   return (
     <Modal open={open} toggle={toggle}>
       <form className={styles.channel__form} onSubmit={handleSubmit}>
-        <FormInput label="Name" value={name} onChange={update(setName)} />
+        <FormInput
+          label="Name"
+          value={name}
+          onChange={update(setName)}
+          error={errors.name}
+        />
         <Button label="Add Channel" className={styles.form__button} />
       </form>
     </Modal>
