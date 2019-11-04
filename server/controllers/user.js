@@ -1,5 +1,6 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 const { user } = require("../queries");
 const createToken = require("../utilities/createToken");
@@ -29,29 +30,34 @@ const register = async (req, res) => {
       name,
       password: hashedPassword
     });
-    const { id, token_version } = newUser;
-    // Create refresh token
-    const refreshToken = createToken(
-      { id, token_version },
-      process.env.REFRESH_SECRET,
-      process.env.REFRESH_EXPIRATION
+    // Send a confirmation link to the email address
+    res.send({ msg: "successfully registered" });
+
+    const emailToken = await jwt.sign(
+      { user_id: newUser.id },
+      process.env.EMAIL_SECRET,
+      { expiresIn: "1d" }
     );
-    // Save refresh token in a cookie
-    res.cookie("jwt", refreshToken, {
-      maxAge: parseInt(process.env.REFRESH_EXPIRATION),
-      httpOnly: true,
-      sameSite: true,
-      secure: false
+
+    const confirmation_url = `http://localhost:3000/confirmation/${emailToken}`;
+
+    console.log("ConfirmationURL:", confirmation_url);
+
+    // create reusable transporter object using the default SMTP transport
+    let transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.NODEMAILER_EMAIL, // generated ethereal user
+        pass: process.env.NODEMAILER_PASSWORD // generated ethereal password
+      }
     });
-    // Create access token
-    const accessToken = createToken(
-      { id, token_version },
-      process.env.ACCESS_SECRET,
-      process.env.ACCESS_EXPIRATION
-    );
-    return res.status(201).send({
-      user: { id, email, name },
-      token: accessToken
+
+    // send mail with defined transport object
+    let info = await transporter.sendMail({
+      from: "admin", // sender address
+      to: email, // list of receivers
+      subject: "Confirm Email", // Subject line
+      html: `Please click this link to confirm your email address: <a href=${confirmation_url}>${confirmation_url}</a>` // html body
     });
   } catch (e) {
     console.error(e);
@@ -68,6 +74,10 @@ const login = async (req, res) => {
       return res.status(404).send({ name: "Name not found" });
     }
     const fetchedUser = users[0];
+    // Check whether the user confirmed their email address
+    if (!fetchedUser.confirmed) {
+      return res.status(401).send({ msg: "Please confirm your email address" });
+    }
     // Compare passwords
     const match = await bcrypt.compare(password, fetchedUser.password);
     if (!match) {
@@ -152,10 +162,33 @@ const refresh_token = async (req, res) => {
   }
 };
 
+const confirmation = async (req, res) => {
+  const { token } = req.params;
+  if (!token) {
+    return res.status(422).send({ msg: "Invalid confirmation url" });
+  }
+  try {
+    const decoded = await jwt.verify(token, process.env.EMAIL_SECRET);
+    if (!decoded) {
+      return res.status(422).send({ msg: "Invalid confirmation url" });
+    }
+    const confirmedUser = await user.update(
+      { id: decoded.user_id },
+      { confirmed: true }
+    );
+    console.log("Confirmed User:", confirmedUser);
+    res.send({ msg: "successfully confirmed" });
+  } catch (e) {
+    console.error(e);
+    return res.status(422).send({ msg: "Invalid confirmation url" });
+  }
+};
+
 module.exports = {
   register,
   login,
   logout,
   reload,
-  refresh_token
+  refresh_token,
+  confirmation
 };

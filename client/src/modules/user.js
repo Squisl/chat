@@ -36,10 +36,8 @@ export const removeUser = user_id => ({
 export const register = (data, history) => async dispatch => {
   try {
     const response = await fetchAPI("/api/user/register", "POST", data);
-    const { user, token } = response;
-    dispatch(receiveSessionUser(user));
-    localStorage.setItem("token", token);
-    history.push("/chat");
+    console.log("response:", response);
+    history.push("/");
   } catch (e) {
     console.error(e);
     dispatch(receiveError(e));

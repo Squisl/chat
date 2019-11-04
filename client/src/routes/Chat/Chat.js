@@ -74,8 +74,9 @@ const Chat = ({
           removeUser(data.user_id);
           break;
         case "receive-channel-update":
-          updateChannel(data.channel);
-          console.log("Channel Update", data.channel);
+          if (data.channel) {
+            updateChannel(data.channel);
+          }
           break;
         default:
           return;
@@ -229,7 +230,7 @@ const Chat = ({
       </div>
       <div className={styles.chat__users}>
         {user.channel.map(u => (
-          <User key={u.id} name={u.name} />
+          <User key={u.name} name={u.name} />
         ))}
       </div>
     </div>

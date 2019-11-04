@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { withRouter } from "react-router-dom";
 
@@ -6,11 +6,17 @@ import styles from "./LoginForm.module.css";
 import FormInput from "../FormInput";
 import Button from "../Button";
 import { loginValidation } from "../../utilities/validation";
+import ErrorMessage from "../ErrorMessage";
 
-const LoginForm = ({ login, history }) => {
+const LoginForm = ({ login, history, error, receiveError, clearError }) => {
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
-  const [errors, setErrors] = useState({});
+
+  useEffect(() => {
+    return () => {
+      clearError();
+    };
+  }, []);
 
   const update = fn => e => fn(e.target.value);
 
@@ -24,24 +30,25 @@ const LoginForm = ({ login, history }) => {
     if (valid) {
       login(data, history);
     } else {
-      setErrors(errors);
+      receiveError(errors);
     }
   };
 
   return (
     <form className={styles.login__form} onSubmit={handleSubmit}>
+      {error.msg && <ErrorMessage message={error.msg} />}
       <FormInput
         label="Name"
         value={name}
         onChange={update(setName)}
-        error={errors.name}
+        error={error.name}
       />
       <FormInput
         label="Password"
         type="password"
         value={password}
         onChange={update(setPassword)}
-        error={errors.password}
+        error={error.password}
       />
       <Button
         label="Log In"

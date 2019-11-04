@@ -1,0 +1,15 @@
+.error__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 14em;
+  padding: 1em;
+  border-radius: 3px;
+  line-height: 1.5;
+  background: var(--light-red);
+  color: white;
+}
+
+.error__message {
+  word-wrap: break-word;
+}
