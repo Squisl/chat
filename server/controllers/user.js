@@ -57,7 +57,7 @@ const register = async (req, res) => {
       from: "admin", // sender address
       to: email, // list of receivers
       subject: "Confirm Email", // Subject line
-      html: `Please click this link to confirm your email address: <a href=${confirmation_url}>${confirmation_url}</a>` // html body
+      html: `Please click this link to confirm your email address: <a href=${confirmation_url} target="_blank">${confirmation_url}</a>` // html body
     });
   } catch (e) {
     console.error(e);
@@ -177,7 +177,7 @@ const confirmation = async (req, res) => {
       { confirmed: true }
     );
     console.log("Confirmed User:", confirmedUser);
-    res.send({ msg: "successfully confirmed" });
+    res.send({ msg: "Successfully confirmed" });
   } catch (e) {
     console.error(e);
     return res.status(422).send({ msg: "Invalid confirmation url" });

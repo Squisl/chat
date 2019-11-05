@@ -6,7 +6,7 @@ import styles from "./LoginForm.module.css";
 import FormInput from "../FormInput";
 import Button from "../Button";
 import { loginValidation } from "../../utilities/validation";
-import ErrorMessage from "../ErrorMessage";
+import NotificationMessage from "../NotificationMessage";
 
 const LoginForm = ({ login, history, error, receiveError, clearError }) => {
   const [name, setName] = useState("");
@@ -36,7 +36,9 @@ const LoginForm = ({ login, history, error, receiveError, clearError }) => {
 
   return (
     <form className={styles.login__form} onSubmit={handleSubmit}>
-      {error.msg && <ErrorMessage message={error.msg} />}
+      {error.msg && (
+        <NotificationMessage color="var(--light-red)" message={error.msg} />
+      )}
       <FormInput
         label="Name"
         value={name}

@@ -1,4 +1,4 @@
-.error__container {
+.notification__container {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -6,10 +6,9 @@
   padding: 1em;
   border-radius: 3px;
   line-height: 1.5;
-  background: var(--light-red);
   color: white;
 }
 
-.error__message {
+.notification__message {
   word-wrap: break-word;
 }
