@@ -10,6 +10,7 @@ import Loading from "../../components/Loading";
 import Button from "../../components/Button";
 import AddChannelModal from "../../components/AddChannelModal";
 import ChannelSettingsModal from "../../components/ChannelSettingsModal/ChannelSettingsModal";
+import NoMessages from "../../components/NoMessages";
 
 const Chat = ({
   fetchChannels,
@@ -186,6 +187,7 @@ const Chat = ({
         {channel.all.map(c => (
           <Channel
             key={c.id}
+            selected={channel.current.id === c.id}
             session={user.session}
             channel={c}
             onClick={handleSwitchChannel(c)}
@@ -211,14 +213,18 @@ const Chat = ({
         />
       </div>
       <div className={styles.chat__messages}>
-        {messages.map(message => (
-          <Message
-            key={message.id}
-            user={message.name}
-            text={message.text}
-            time={message.created_at}
-          />
-        ))}
+        {messages.length > 0 ? (
+          messages.map(message => (
+            <Message
+              key={message.id}
+              user={message.name}
+              text={message.text}
+              time={message.created_at}
+            />
+          ))
+        ) : (
+          <NoMessages />
+        )}
         <div ref={messagesEnd} style={{ margin: "0" }} />
       </div>
       <div className={styles.chat__form}>

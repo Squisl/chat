@@ -1,0 +1,21 @@
+.no__messages__container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.no__messages {
+  display: flex;
+  color: white;
+}
+
+.no__messages__icon {
+  font-size: 2rem;
+  margin-right: 0.3em;
+}
+
+.no__messages__description {
+  font-size: 1.5rem;
+  font-weight: 500;
+}

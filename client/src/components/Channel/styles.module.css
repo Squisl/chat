@@ -15,3 +15,7 @@
 .channel__name {
   text-align: center;
 }
+
+.channel_selected {
+  background: rgba(255, 255, 255, 0.2);
+}

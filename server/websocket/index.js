@@ -110,7 +110,6 @@ const startSocket = server => {
               JSON.stringify({ action: "user-left", user_id: jwt.id })
             );
           });
-
           // Add user to the new channel
           channels[data.channel.name] = channels[data.channel.name].concat({
             user: data.user,
@@ -132,6 +131,7 @@ const startSocket = server => {
               users: channels[data.channel.name].map(user => user.user)
             })
           );
+          console.log("Channels:", channels);
           break;
         case "update-channel":
           // TODO: Check if channel name is already taken
